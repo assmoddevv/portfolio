@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дмитрий Филатов — Графический дизайнер, Москва</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0a0a0a;
+  --bg-light: #111111;
+  --text: #f5f5f0;
+  --text-muted: #888;
+  --accent: #E8572A;
+  --accent-hover: #ff6b3d;
+  --card-bg: #161616;
+  --border: #222;
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+  line-height: 1.6;
+}
+
+/* Custom Cursor */
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.15s ease, background 0.15s ease, width 0.15s ease, height 0.15s ease;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  transform: translate(-50%, -50%);
+}
+
+.cursor.hover {
+  width: 50px;
+  height: 50px;
+  background: rgba(232, 87, 42, 0.1);
+  border-color: var(--accent);
+}
+
+/* Loader */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+}
+
+.loader-text span {
+  display: inline-block;
+  animation: slideUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.loader-text span.dot {
+  color: var(--accent);
+}
+
+.loader-bar {
+  width: 200px;
+  height: 2px;
+  background: var(--border);
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  animation: loadBar 2s ease forwards;
+}
+
+@keyframes slideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loadBar {
+  to { width: 100%; }
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  mix-blend-mode: difference;
+  transition: all 0.4s ease;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nav-logo .dot {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  transition: color 0.3s ease;
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 400;
+}
+
+.hero-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+}
+
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title .line span {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-title .line:nth-child(2) span {
+  animation-delay: 0.15s;
+}
+
+.hero-title .line:nth-child(3) span {
+  animation-delay: 0.3s;
+  color: var(--accent);
+}
+
+@keyframes heroReveal {
+  to { transform: translateY(0); }
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: var(--text-muted);
+  max-width: 550px;
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.8s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.hero-meta {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fadeIn 1s ease 1.2s forwards;
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.hero-meta .scroll-line {
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-meta .scroll-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  animation: scrollLine 2s ease infinite;
+}
+
+@keyframes scrollLine {
+  to { left: 100%; }
+}
+
+.hero-location {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.2s forwards;
+  font-weight: 400;
+  text-align: right;
+}
+
+.hero-location .city {
+  display: block;
+  color: var(--text);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+/* Marquee */
+.marquee-section {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  animation: marquee 25s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-track span {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0 1.5rem;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.marquee-track span.accent {
+  color: var(--accent);
+  -webkit-text-stroke: 1px var(--accent);
+  -webkit-text-fill-color: transparent;
+}
+
+.marquee-track span.dot {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* About Section */
+.about {
+  padding: 8rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.about-left {
+  position: sticky;
+  top: 8rem;
+  align-self: start;
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.section-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.about-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.about-right {
+  padding-top: 4rem;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.about-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-top: 0.7rem;
+  font-weight: 400;
+}
+
+/* Experience Section */
+.experience {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.experience-header {
+  margin-bottom: 5rem;
+}
+
+.experience-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.experience-heading .highlight {
+  color: var(--accent);
+}
+
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--border);
+}
+
+.timeline-item {
+  padding: 3rem 0 3rem 4rem;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  transition: padding-left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-item:hover {
+  padding-left: 4.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 3.5rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-item:hover::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(232, 87, 42, 0.4);
+}
+
+.timeline-year {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.timeline-role {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-company {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Works Section */
+.works {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.works-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 5rem;
+}
+
+.works-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.works-count {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.work-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: none;
+  background: var(--card-bg);
+}
+
+.work-card:nth-child(1) { grid-column: span 7; aspect-ratio: 16/10; }
+.work-card:nth-child(2) { grid-column: span 5; aspect-ratio: 4/5; }
+.work-card:nth-child(3) { grid-column: span 5; aspect-ratio: 4/5; }
+.work-card:nth-child(4) { grid-column: span 7; aspect-ratio: 16/10; }
+.work-card:nth-child(5) { grid-column: span 4; aspect-ratio: 1/1; }
+.work-card:nth-child(6) { grid-column: span 4; aspect-ratio: 1/1; }
+.work-card:nth-child(7) { grid-column: span 4; aspect-ratio: 1/1; }
+.work-card:nth-child(8) { grid-column: span 6; aspect-ratio: 16/10; }
+.work-card:nth-child(9) { grid-column: span 6; aspect-ratio: 16/10; }
+
+.work-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  filter: brightness(0.9) saturate(0.95);
+}
+
+.work-card:hover .work-card-img {
+  transform: scale(1.05);
+  filter: brightness(1) saturate(1);
+}
+
+.work-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.work-card:hover .work-card-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.work-card-category {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.work-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.work-card-year {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  color: var(--text);
+  background: rgba(0,0,0,0.6);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-weight: 500;
+}
+
+.work-card:hover .work-card-year {
+  opacity: 1;
+}
+
+.work-card-number {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  color: var(--text);
+  background: rgba(0,0,0,0.6);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  font-weight: 500;
+}
+
+/* Skills */
+.skills {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.skill-group-title {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.skill-list {
+  list-style: none;
+}
+
+.skill-list li {
+  padding: 0.7rem 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  font-weight: 300;
+}
+
+.skill-list li:hover {
+  color: var(--text);
+  padding-left: 1rem;
+}
+
+/* Contact */
+.contact {
+  padding: 8rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 4rem;
+}
+
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.contact-heading .accent {
+  color: var(--accent);
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.contact-link {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  font-weight: 300;
+}
+
+.contact-link:hover {
+  color: var(--text);
+  transform: translateX(10px);
+}
+
+.contact-link .arrow {
+  width: 30px;
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  transition: background 0.3s ease, width 0.3s ease;
+}
+
+.contact-link:hover .arrow {
+  background: var(--accent);
+  width: 50px;
+}
+
+/* Footer */
+footer {
+  padding: 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.footer-logo {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Scroll Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Magnetic button */
+.magnetic {
+  transition: transform 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .about {
+    grid-template-columns: 1fr;
+    padding: 5rem 2rem;
+  }
+  .about-left {
+    position: static;
+  }
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+  .works-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .work-card:nth-child(1) { grid-column: span 6; aspect-ratio: 16/10; }
+  .work-card:nth-child(2) { grid-column: span 3; aspect-ratio: 4/5; }
+  .work-card:nth-child(3) { grid-column: span 3; aspect-ratio: 4/5; }
+  .work-card:nth-child(4) { grid-column: span 6; aspect-ratio: 16/10; }
+  .work-card:nth-child(5) { grid-column: span 3; aspect-ratio: 1/1; }
+  .work-card:nth-child(6) { grid-column: span 3; aspect-ratio: 1/1; }
+  .work-card:nth-child(7) { grid-column: span 6; aspect-ratio: 16/10; }
+  .work-card:nth-child(8) { grid-column: span 3; aspect-ratio: 1/1; }
+  .work-card:nth-child(9) { grid-column: span 3; aspect-ratio: 1/1; }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem 1.5rem;
+  }
+  .nav-links {
+    display: none;
+  }
+  .hero {
+    padding: 0 1.5rem;
+  }
+  .hero-meta, .hero-location {
+    display: none;
+  }
+  .about, .experience, .works, .skills, .contact {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+  .work-card:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+  .about-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .skills-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .timeline-item {
+    padding-left: 2.5rem;
+  }
+  .timeline-item:hover {
+    padding-left: 3rem;
+  }
+  footer {
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  .cursor, .cursor-dot {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+}
+
+/* Grain overlay */
+.grain {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.4;
+}
+
+/* Floating elements */
+.float-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.05;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-text">
+    <span style="animation-delay: 0.1s">Д</span><span style="animation-delay: 0.15s">Ф</span><span class="dot" style="animation-delay: 0.2s">.</span>
+  </div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">ДФ<span class="dot">.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about" class="magnetic">Обо мне</a></li>
+    <li><a href="#experience" class="magnetic">Опыт</a></li>
+    <li><a href="#works" class="magnetic">Работы</a></li>
+    <li><a href="#skills" class="magnetic">Навыки</a></li>
+    <li><a href="#contact" class="magnetic">Контакт</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-label">Графический дизайнер · Москва</div>
+  <h1 class="hero-title">
+    <span class="line"><span>Дмитрий</span></span>
+    <span class="line"><span>Филатов</span></span>
+    <span class="line"><span>Дизайн.</span></span>
+  </h1>
+  <p class="hero-subtitle">
+    Графический дизайн, брендинг, айдентика и визуальные системы. 
+    5+ лет превращаю идеи в запоминающиеся решения.
+  </p>
+  <div class="hero-meta">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+  <div class="hero-location">
+    <span>2019 — 2025</span>
+    <span class="city">Москва, RU</span>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span>Брендинг</span>
+    <span class="dot"></span>
+    <span>Айдентика</span>
+    <span class="dot">✦</span>
+    <span>Логотипы</span>
+    <span class="dot"></span>
+    <span>Типографика</span>
+    <span class="dot">✦</span>
+    <span>UI/UX</span>
+    <span class="dot">✦</span>
+    <span>Web Design</span>
+    <span class="dot"></span>
+    <span>Motion</span>
+    <span class="dot">✦</span>
+    <span>Брендинг</span>
+    <span class="dot">✦</span>
+    <span>Айдентика</span>
+    <span class="dot">✦</span>
+    <span>Логотипы</span>
+    <span class="dot">✦</span>
+    <span>Типографика</span>
+    <span class="dot">✦</span>
+    <span>UI/UX</span>
+    <span class="dot">✦</span>
+    <span>Web Design</span>
+    <span class="dot">✦</span>
+    <span>Motion</span>
+    <span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about-left reveal">
+    <div class="section-label">Обо мне</div>
+    <h2 class="about-heading">Дизайн — это язык, на котором говорит бренд</h2>
+  </div>
+  <div class="about-right">
+    <p class="about-text reveal reveal-delay-1">
+      Привет! Меня зовут <strong>Дмитрий Алексеевич Филатов</strong>. Я графический дизайнер из Москвы с более чем 5-летним опытом работы в сфере визуальных коммуникаций.
+    </p>
+    <p class="about-text reveal reveal-delay-2">
+      Специализируюсь на <strong>брендинге, айдентике, логотипах и комплексных визуальных системах</strong>. Верю, что хороший дизайн — это не просто красивая картинка, а стратегический инструмент, который решает бизнес-задачи.
+    </p>
+    <p class="about-text reveal reveal-delay-3">
+      Работал с проектами от стартапов до крупных компаний, создавая <strong>узнаваемые бренды</strong>, полиграфию, упаковку и цифровые продукты.
+    </p>
+    <div class="about-stats reveal reveal-delay-4">
+      <div>
+        <div class="stat-number" data-count="50">0</div>
+        <div class="stat-label">Проектов</div>
+      </div>
+      <div>
+        <div class="stat-number" data-count="5">0</div>
+        <div class="stat-label">Лет опыта</div>
+      </div>
+      <div>
+        <div class="stat-number" data-count="30">0</div>
+        <div class="stat-label">Клиентов</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section class="experience" id="experience">
+  <div class="experience-header reveal">
+    <div class="section-label">Карьерный путь</div>
+    <h2 class="experience-heading">
+      От дизайнера<br>до <span class="highlight">team lead</span>
+    </h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2022 — 2025</div>
+      <div class="timeline-role">Team Lead / Арт-директор</div>
+      <div class="timeline-company">Креативное агентство · Москва</div>
+      <div class="timeline-desc">
+        Руковожу командой дизайнеров. Отвечаю за визуальную стратегию проектов, менторинг команды и коммуникацию с клиентами. Запустил 20+ брендинговых проектов.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2020 — 2022</div>
+      <div class="timeline-role">Старший дизайнер</div>
+      <div class="timeline-company">Digital-студия · Москва</div>
+      <div class="timeline-desc">
+        Вёл ключевые проекты по брендингу и айдентике. Разрабатывал комплексные визуальные системы, работал с крупными клиентами. Начал заниматься арт-дирекшном.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2019 — 2020</div>
+      <div class="timeline-role">Дизайнер</div>
+      <div class="timeline-company">Фриланс · Стартапы</div>
+      <div class="timeline-desc">
+        Начало карьеры. Работа с логотипами, фирменным стилем, полиграфией и digital-продуктами. Быстрый рост навыков и формирование собственного подхода к дизайну.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Works -->
+<section class="works" id="works">
+  <div class="works-header reveal">
+    <div>
+      <div class="section-label">Избранные работы</div>
+      <h2 class="works-heading">Проекты</h2>
+    </div>
+    <div class="works-count">09 проектов</div>
+  </div>
+  <div class="works-grid">
+    <div class="work-card reveal">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/199e3e42c-a82a-491e-aa07-3ec3811b3808.png" alt="ШАВА Branding">
+      <div class="work-card-number">01</div>
+      <div class="work-card-year">2024</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Брендинг / Айдентика</div>
+        <div class="work-card-title">ШАВА — Вкусная шава у нас</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-1">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/185f7c25e-f075-4e45-a0b8-d32f925d827f.png" alt="Вывеска">
+      <div class="work-card-number">02</div>
+      <div class="work-card-year">2024</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Наружная реклама</div>
+        <div class="work-card-title">Вкус Рядом — Signage</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-2">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/1dfa1369a-4775-4356-875d-5e25ed7bc648.png" alt="Craft Beer">
+      <div class="work-card-number">03</div>
+      <div class="work-card-year">2023</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Упаковка</div>
+        <div class="work-card-title">Крафт Рашн Шаверма IPA</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-1">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/127e0fcd6-393f-41a1-ba2a-00169a1e2f54.png" alt="Abstract">
+      <div class="work-card-number">04</div>
+      <div class="work-card-year">2023</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Арт-дирекшн</div>
+        <div class="work-card-title">Геометрия вкуса</div>
+      </div>
+    </div>
+    <div class="work-card reveal">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/1330eace8-be2d-4be1-8730-ca3601d12dd3.png" alt="Понтовая кружка">
+      <div class="work-card-number">05</div>
+      <div class="work-card-year">2024</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Мерч / Продукт</div>
+        <div class="work-card-title">Понтовая кружка</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-1">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/14dafb443-d8e3-4b1d-8001-e3cbd9b615ca.png" alt="Гиг-Стоп">
+      <div class="work-card-number">06</div>
+      <div class="work-card-year">2025</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Постер / Event</div>
+        <div class="work-card-title">ГИГ-СТОП</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-2">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/1cad02fdb-9423-42c2-a7ed-f6bbc55f1ed1.png" alt="Грязня Поносов">
+      <div class="work-card-number">07</div>
+      <div class="work-card-year">2024</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Обложка альбома</div>
+        <div class="work-card-title">Грязня Поносов — Боли в затылочной области</div>
+      </div>
+    </div>
+    <div class="work-card reveal">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/1100bfeff-887f-46b4-a18a-071677079338.png" alt="Ан-натомия Гига">
+      <div class="work-card-number">08</div>
+      <div class="work-card-year">2025</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Постер / Event</div>
+        <div class="work-card-title">АН-НАТОМИЯ ГИГА</div>
+      </div>
+    </div>
+    <div class="work-card reveal reveal-delay-1">
+      <img class="work-card-img" src="https://image.qwenlm.ai/public_source/14efd8a4-c333-44f5-b845-384f2ecdff64/11ea41be3-68f5-45c6-940b-f58b7bbc3515.png" alt="Novogodn'aya">
+      <div class="work-card-number">09</div>
+      <div class="work-card-year">2024</div>
+      <div class="work-card-overlay">
+        <div class="work-card-category">Обложка сингла</div>
+        <div class="work-card-title">Грязня Поносов ft. Егор Гигена — novogodn'aya</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section class="skills" id="skills">
+  <div class="reveal">
+    <div class="section-label">Навыки</div>
+    <h2 class="experience-heading" style="margin-top: 1rem;">Инструменты &<br><span class="highlight" style="color: var(--accent);">компетенции</span></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="reveal reveal-delay-1">
+      <div class="skill-group-title">Дизайн</div>
+      <ul class="skill-list">
+        <li>Графический дизайн</li>
+        <li>Брендинг</li>
+        <li>Айдентика</li>
+        <li>Логотипы</li>
+        <li>Типографика</li>
+      </ul>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="skill-group-title">Digital</div>
+      <ul class="skill-list">
+        <li>UI/UX Design</li>
+        <li>Web Design</li>
+        <li>Motion Design <span style="color: var(--accent); font-size: 0.7rem;">(a lil)</span></li>
+        <li>Прототипирование</li>
+        <li>Design Systems</li>
+      </ul>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="skill-group-title">Софт</div>
+      <ul class="skill-list">
+        <li>Figma</li>
+        <li>Adobe Illustrator</li>
+        <li>Adobe Photoshop</li>
+        <li>After Effects</li>
+        <li>Blender</li>
+      </ul>
+    </div>
+    <div class="reveal reveal-delay-4">
+      <div class="skill-group-title">Мягкие навыки</div>
+      <ul class="skill-list">
+        <li>Менеджмент и управление</li>
+        <li>Коммуникация</li>
+        <li>Презентация</li>
+        <li>Стратегия</li>
+        <li>Правовое сопровождение</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <div class="section-label">Связаться</div>
+  </div>
+  <div class="contact-content">
+    <div class="reveal reveal-delay-1">
+      <h2 class="contact-heading">
+        Давайте создадим<br>что-то <span class="accent">крутое</span><br>вместе.
+      </h2>
+    </div>
+    <div class="contact-links reveal reveal-delay-2">
+      <a href="mailto:hello@filatov.design" class="contact-link magnetic">
+        <span class="arrow"></span>
+        hello@filatov.design
+      </a>
+      <a href="#" class="contact-link magnetic">
+        <span class="arrow"></span>
+        Telegram — @d_filatov
+      </a>
+      <a href="#" class="contact-link magnetic">
+        <span class="arrow"></span>
+        Behance — filatov.design
+      </a>
+      <a href="#" class="contact-link magnetic">
+        <span class="arrow"></span>
+        Instagram — @d.filatov
+      </a>
+      <a href="#" class="contact-link magnetic">
+        <span class="arrow"></span>
+        Dribbble — dfilatov
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">ДФ<span style="color: var(--accent);">.</span></div>
+  <div>© 2025 Дмитрий Филатов. Все права защищены.</div>
+  <div>Москва · 2019—2025</div>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2200);
+});
+
+// Custom Cursor
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+let mouseX = 0, mouseY = 0;
+let cursorX = 0, cursorY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+});
+
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * 0.15;
+  cursorY += (mouseY - cursorY) * 0.15;
+  cursor.style.left = cursorX + 'px';
+  cursor.style.top = cursorY + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Hover effect on interactive elements
+const hoverElements = document.querySelectorAll('a, .work-card, .magnetic, .timeline-item, .skill-list li');
+hoverElements.forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Scroll Reveal
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => observer.observe(el));
+
+// Counter Animation
+const statNumbers = document.querySelectorAll('.stat-number');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      let current = 0;
+      const increment = target / 40;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          el.textContent = target + '+';
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current) + '+';
+        }
+      }, 40);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+statNumbers.forEach(el => counterObserver.observe(el));
+
+// Magnetic effect
+const magnetics = document.querySelectorAll('.magnetic');
+magnetics.forEach(el => {
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.transform = 'translate(0, 0)';
+  });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Parallax on hero
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    const heroTitle = hero.querySelector('.hero-title');
+    if (heroTitle && scrolled < window.innerHeight) {
+      heroTitle.style.transform = `translateY(${scrolled * 0.15}px)`;
+      heroTitle.style.opacity = 1 - scrolled / (window.innerHeight * 0.8);
+    }
+  }
+});
+
+// Nav background on scroll
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    nav.style.background = 'rgba(10, 10, 10, 0.9)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.mixBlendMode = 'normal';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.mixBlendMode = 'difference';
+  }
+});
+</script>
+</body>
+</html>
+
